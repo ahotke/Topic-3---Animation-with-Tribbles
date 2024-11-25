@@ -6,9 +6,19 @@ namespace Topic_3
 {
     public class Game1 : Game
     {
-        Texture2D tribbleGreyTexture, tribbleBrownTexture, tribbleCreamTexture, tribbleOrangeTexture, backgroundTexture;
+        Texture2D tribbleGreyTexture, tribbleBrownTexture, tribbleCreamTexture, tribbleOrangeTexture, tribbleYardTexture, tribbleIntroTexture;
         Rectangle tribbleGreyRect, tribbleBrownRect, tribbleCreamRect, tribbleOrangeRect, window, backgroundRect;
         Vector2 tribbleGreySpeed, tribbleBrownSpeed, tribbleCreamSpeed, tribbleOrangeSpeed;
+
+        enum Screen
+        {
+            Intro, 
+            TribbleYard
+        }
+
+        Screen screen;
+
+        MouseState mouseState;
 
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
@@ -43,7 +53,8 @@ namespace Topic_3
             tribbleCreamSpeed = new Vector2(-3, 2);
             tribbleOrangeSpeed = new Vector2(4, -5);
             base.Initialize();
-           
+
+            screen = Screen.Intro;
             
         }
 
@@ -53,11 +64,12 @@ namespace Topic_3
 
             // TODO: use this.Content to load your game content here
 
+            tribbleIntroTexture = Content.Load<Texture2D>("tribble_intro");
             tribbleGreyTexture = Content.Load<Texture2D>("tribbleGrey");
             tribbleBrownTexture = Content.Load<Texture2D>("tribbleBrown");
             tribbleCreamTexture = Content.Load<Texture2D>("tribbleCream");
             tribbleOrangeTexture = Content.Load<Texture2D>("tribbleOrange");
-            backgroundTexture = Content.Load<Texture2D>("StarTrek");
+            tribbleYardTexture = Content.Load<Texture2D>("StarTrek");
         }
 
         protected override void Update(GameTime gameTime)
@@ -66,79 +78,94 @@ namespace Topic_3
                 Exit();
 
             // TODO: Add your update logic here
-            tribbleGreyRect.X += (int)tribbleGreySpeed.X;
-            tribbleGreyRect.Y += (int)tribbleGreySpeed.Y;
-            if (tribbleGreyRect.Right >= window.Width || tribbleGreyRect.Left <= 0)
+
+            mouseState = Mouse.GetState();
+
+            if (screen == Screen.Intro)
             {
-                tribbleGreySpeed.X *= -1;
+                if (mouseState.LeftButton == ButtonState.Pressed)
+                {
+                    screen = Screen.TribbleYard;
+                }
             }
 
-            if (tribbleGreyRect.Bottom >= window.Bottom || tribbleGreyRect.Top <= 0)
+            else if (screen == Screen.TribbleYard)
             {
-                tribbleGreySpeed.Y *= -1;
-            }
 
-            tribbleBrownRect.X += (int)tribbleBrownSpeed.X;
-            tribbleBrownRect.Y += (int)tribbleBrownSpeed.Y;
-            if (tribbleBrownRect.Right >= window.Width || tribbleBrownRect.Left <= 0)
-            {
-                tribbleBrownSpeed.X *= -1;
-            }
-            if (tribbleBrownRect.Bottom >= window.Bottom || tribbleBrownRect.Top <= 0)
-            {
-                tribbleBrownSpeed.Y *= -1;
+                tribbleGreyRect.X += (int)tribbleGreySpeed.X;
+                tribbleGreyRect.Y += (int)tribbleGreySpeed.Y;
+                if (tribbleGreyRect.Right >= window.Width || tribbleGreyRect.Left <= 0)
+                {
+                    tribbleGreySpeed.X *= -1;
+                }
 
-            }
-        
+                if (tribbleGreyRect.Bottom >= window.Bottom || tribbleGreyRect.Top <= 0)
+                {
+                    tribbleGreySpeed.Y *= -1;
+                }
 
-            tribbleCreamRect.X += (int)tribbleCreamSpeed.X;
-            tribbleCreamRect.Y += (int)tribbleCreamSpeed.Y;
+                tribbleBrownRect.X += (int)tribbleBrownSpeed.X;
+                tribbleBrownRect.Y += (int)tribbleBrownSpeed.Y;
+                if (tribbleBrownRect.Right >= window.Width || tribbleBrownRect.Left <= 0)
+                {
+                    tribbleBrownSpeed.X *= -1;
+                }
+                if (tribbleBrownRect.Bottom >= window.Bottom || tribbleBrownRect.Top <= 0)
+                {
+                    tribbleBrownSpeed.Y *= -1;
 
-            if (tribbleCreamRect.Right >= window.Width || tribbleCreamRect.Left <= 0)
-            {
-                tribbleCreamSpeed.X *= -1;
+                }
 
-            }
-            if (tribbleCreamRect.Bottom >= window.Bottom || tribbleCreamRect.Top <= 0)
-            {
-                tribbleCreamSpeed.Y *= -1;
 
-            }
+                tribbleCreamRect.X += (int)tribbleCreamSpeed.X;
+                tribbleCreamRect.Y += (int)tribbleCreamSpeed.Y;
 
-            tribbleOrangeRect.X += (int)tribbleOrangeSpeed.X;
-            tribbleOrangeRect.Y += (int)tribbleOrangeSpeed.Y;
-            if (tribbleOrangeRect.Right >= window.Width || tribbleOrangeRect.Left <= 0)
-            {
-                tribbleOrangeSpeed.X *= -1;
-            }
-            if (tribbleOrangeRect.Bottom >= window.Bottom || tribbleOrangeRect.Top <= 0)
-            {
-                tribbleOrangeSpeed.Y *= -1;
-            }
+                if (tribbleCreamRect.Right >= window.Width || tribbleCreamRect.Left <= 0)
+                {
+                    tribbleCreamSpeed.X *= -1;
 
-            if (tribbleGreyRect.Intersects(tribbleBrownRect) || tribbleGreyRect.Intersects(tribbleCreamRect) || tribbleGreyRect.Intersects(tribbleOrangeRect))
-            {
-                tribbleGreySpeed.X *= -1;
-                tribbleGreySpeed.Y *= -1;
-            }
+                }
+                if (tribbleCreamRect.Bottom >= window.Bottom || tribbleCreamRect.Top <= 0)
+                {
+                    tribbleCreamSpeed.Y *= -1;
 
-            if (tribbleBrownRect.Intersects(tribbleGreyRect) || tribbleBrownRect.Intersects(tribbleCreamRect) || tribbleBrownRect.Intersects(tribbleOrangeRect))
-            {
-                tribbleBrownSpeed.X *= -1;
-                tribbleBrownSpeed.Y *= -1;
-            }
+                }
 
-            if (tribbleCreamRect.Intersects(tribbleGreyRect) || tribbleCreamRect.Intersects(tribbleBrownRect) || tribbleCreamRect.Intersects(tribbleOrangeRect))
-            {
-                tribbleCreamSpeed.X *= -1;
-                tribbleCreamSpeed.Y *= -1;
-            }
+                tribbleOrangeRect.X += (int)tribbleOrangeSpeed.X;
+                tribbleOrangeRect.Y += (int)tribbleOrangeSpeed.Y;
+                if (tribbleOrangeRect.Right >= window.Width || tribbleOrangeRect.Left <= 0)
+                {
+                    tribbleOrangeSpeed.X *= -1;
+                }
+                if (tribbleOrangeRect.Bottom >= window.Bottom || tribbleOrangeRect.Top <= 0)
+                {
+                    tribbleOrangeSpeed.Y *= -1;
+                }
 
-            if (tribbleOrangeRect.Intersects(tribbleGreyRect) || tribbleOrangeRect.Intersects(tribbleBrownRect) || tribbleOrangeRect.Intersects(tribbleCreamRect))
-            {
-                tribbleOrangeSpeed.X *= -1;
-                tribbleOrangeSpeed.Y *= -1;
-            }
+                if (tribbleGreyRect.Intersects(tribbleBrownRect) || tribbleGreyRect.Intersects(tribbleCreamRect) || tribbleGreyRect.Intersects(tribbleOrangeRect))
+                {
+                    tribbleGreySpeed.X *= -1;
+                    tribbleGreySpeed.Y *= -1;
+                }
+
+                if (tribbleBrownRect.Intersects(tribbleGreyRect) || tribbleBrownRect.Intersects(tribbleCreamRect) || tribbleBrownRect.Intersects(tribbleOrangeRect))
+                {
+                    tribbleBrownSpeed.X *= -1;
+                    tribbleBrownSpeed.Y *= -1;
+                }
+
+                if (tribbleCreamRect.Intersects(tribbleGreyRect) || tribbleCreamRect.Intersects(tribbleBrownRect) || tribbleCreamRect.Intersects(tribbleOrangeRect))
+                {
+                    tribbleCreamSpeed.X *= -1;
+                    tribbleCreamSpeed.Y *= -1;
+                }
+
+                if (tribbleOrangeRect.Intersects(tribbleGreyRect) || tribbleOrangeRect.Intersects(tribbleBrownRect) || tribbleOrangeRect.Intersects(tribbleCreamRect))
+                {
+                    tribbleOrangeSpeed.X *= -1;
+                    tribbleOrangeSpeed.Y *= -1;
+                }
+            }        
 
             base.Update(gameTime);
         }
@@ -150,16 +177,23 @@ namespace Topic_3
             // TODO: Add your drawing code here
             _spriteBatch.Begin();
 
-            _spriteBatch.Draw(backgroundTexture, backgroundRect, Color.White);
+            if (screen == Screen.Intro)
+            {
+                _spriteBatch.Draw(tribbleIntroTexture, backgroundRect, Color.White);
+            }
 
-            _spriteBatch.Draw(tribbleGreyTexture, tribbleGreyRect, Color.White);
-          
-            _spriteBatch.Draw(tribbleBrownTexture, tribbleBrownRect, Color.White);
+            else if (screen == Screen.TribbleYard) {
 
-            _spriteBatch.Draw(tribbleCreamTexture, tribbleCreamRect, Color.White);
+                _spriteBatch.Draw(tribbleYardTexture, backgroundRect, Color.White);
 
-            _spriteBatch.Draw(tribbleOrangeTexture, tribbleOrangeRect, Color.White);
+                _spriteBatch.Draw(tribbleGreyTexture, tribbleGreyRect, Color.White);
 
+                _spriteBatch.Draw(tribbleBrownTexture, tribbleBrownRect, Color.White);
+
+                _spriteBatch.Draw(tribbleCreamTexture, tribbleCreamRect, Color.White);
+
+                _spriteBatch.Draw(tribbleOrangeTexture, tribbleOrangeRect, Color.White);
+            }
             _spriteBatch.End();
             base.Draw(gameTime);
         }

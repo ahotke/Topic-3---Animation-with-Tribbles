@@ -25,6 +25,18 @@
 /processorParam:TextureFormat=Color
 /build:heres-some-of-my-best-shots-from-star-trek-online-all-v0-rqywwhlh41lb1.jpg;StarTrek.jpg
 
+#begin tribble_intro.jpg
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:tribble_intro.jpg
+
 #begin tribbleBrown.png
 /importer:TextureImporter
 /processor:TextureProcessor
